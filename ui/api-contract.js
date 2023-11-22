@@ -10,7 +10,7 @@ function getStringAfterEquals(inputString) {
 
 async function readBuildFile(branchName) {
   if (!branchName) return;
-  const url = `https://api.github.com/repos/ondc-official/ONDC-RET-Specifications/contents/ui/build.js?ref=${branchName}`;
+  const url = `https://api.github.com/repos/abhik-wil/ONDC-RET-Specifications/contents/ui/build.js?ref=${branchName}`;
   const features = await getFeatures(branchName)
  
   try {
