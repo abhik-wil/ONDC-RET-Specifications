@@ -12,7 +12,7 @@ function formatText(inputText) {
 
 function toUnderscoreCase(inputText) {
   const words = inputText.split(" ");
-  const lowerCaseWords = words.map((word) => word === word.toUpperCase() ? `%23${word.toLowerCase()}%23`: word.toLowerCase()).join("_") + ".md";
+  const lowerCaseWords = words.map((word) => word === word.toUpperCase() ? `#${word.toLowerCase()}#`: word.toLowerCase()).join("_") + ".md";
   
   return lowerCaseWords
 }
@@ -66,12 +66,13 @@ function markdownConverter(selectedOption) {
 
   selectedOption = toUnderscoreCase(selectedOption);
   features.forEach((url, name) => {
+    console.log(name, selectedOption, url, name === selectedOption)
     if (name === selectedOption) {
       download_url = url;
     }
   });
   const filePath = download_url;
-
+  
   fetch(filePath)
     .then((response) => {
       if (response.ok) {
