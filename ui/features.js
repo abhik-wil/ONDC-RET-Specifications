@@ -3,7 +3,7 @@ function formatText(inputText) {
   const words = inputText.split("_");
   const formattedWords = words.map((word) => {
     if (word[0] === "#" && word[word.length - 1] === "#" && word.length >= 3)
-      return word.slice(1, word.length - 2).toUpperCase();
+      return word.slice(1, word.length - 1).toUpperCase();
     else return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
   });
   const formattedText = formattedWords.join(" ");
@@ -12,14 +12,9 @@ function formatText(inputText) {
 
 function toUnderscoreCase(inputText) {
   const words = inputText.split(" ");
-  const lowerCaseWords = words.map((word) => word.toLowerCase());
-  if (words.length > 1) {
-    // If it's a phrase with multiple words, add underscores and ".md" extension
-    return lowerCaseWords.join("_") + ".md";
-  } else {
-    // If it's a single word, just add ".md" extension
-    return lowerCaseWords[0] + ".md";
-  }
+  const lowerCaseWords = words.map((word) => word === word.toUpperCase() ? `%23${word.toLowerCase()}%23`: word.toLowerCase()).join("_") + ".md";
+  
+  return lowerCaseWords
 }
 async function getFeatures(branchName) {
   if (!branchName) return;
@@ -42,7 +37,6 @@ async function getFeatures(branchName) {
       var name = feature.name;
       featureMap.set(name, feature.download_url);
       name = name.split(".");
-      console.log("Feature name obtained", name);
       const feature_name = formatText(name[0]);
 
       option.text = feature_name;
@@ -72,7 +66,7 @@ function markdownConverter(selectedOption) {
 
   selectedOption = toUnderscoreCase(selectedOption);
   features.forEach((url, name) => {
-    if (name.replace("#", "") === selectedOption) {
+    if (name === selectedOption) {
       download_url = url;
     }
   });
