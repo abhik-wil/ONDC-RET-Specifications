@@ -1,9 +1,11 @@
 var features;
 function formatText(inputText) {
   const words = inputText.split("_");
-  const formattedWords = words.map(
-    (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
-  );
+  const formattedWords = words.map((word) => {
+    if (word[0] === "#" && word[word.length - 1] === "#" && word.length >= 3)
+      return word.slice(1, word.length - 2).toUpperCase();
+    else return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+  });
   const formattedText = formattedWords.join(" ");
   return formattedText;
 }
@@ -40,7 +42,9 @@ async function getFeatures(branchName) {
       var name = feature.name;
       featureMap.set(name, feature.download_url);
       name = name.split(".");
+      console.log("Feature name obtained", name);
       const feature_name = formatText(name[0]);
+
       option.text = feature_name;
       selectedOption.add(option);
     });
@@ -68,7 +72,7 @@ function markdownConverter(selectedOption) {
 
   selectedOption = toUnderscoreCase(selectedOption);
   features.forEach((url, name) => {
-    if (name === selectedOption) {
+    if (name.replace("#", "") === selectedOption) {
       download_url = url;
     }
   });
